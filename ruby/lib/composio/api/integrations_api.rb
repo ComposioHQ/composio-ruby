@@ -316,10 +316,13 @@ module Composio
 
     # List all connectors
     #
-    # List all connectors
-    #
+    # @param page [Float] 
+    # @param page_size [Float] 
     # @param [Hash] extra additional parameters to pass along through :header_params, :query_params, or parameter name
-    def list_global_connectors(extra: {})
+    def list_global_connectors(page: SENTINEL, page_size: SENTINEL,  extra: {})
+      extra[:page] = page if page != SENTINEL
+      extra[:page_size] = page_size if page_size != SENTINEL
+
       api_response = list_global_connectors_with_http_info_impl(extra)
       api_response.data
     end
@@ -334,8 +337,9 @@ module Composio
     end
 
     # List all connectors
-    # List all connectors
     # @param [Hash] opts the optional parameters
+    # @option opts [Float] :page 
+    # @option opts [Float] :page_size 
     # @return [GetConnectorListResDTO]
     private def list_global_connectors_impl(opts = {})
       data, _status_code, _headers = list_global_connectors_with_http_info(opts)
@@ -343,8 +347,9 @@ module Composio
     end
 
     # List all connectors
-    # List all connectors
     # @param [Hash] opts the optional parameters
+    # @option opts [Float] :page 
+    # @option opts [Float] :page_size 
     # @return [APIResponse] data is GetConnectorListResDTO, status code, headers and response
     private def list_global_connectors_with_http_info_impl(opts = {})
       if @api_client.config.debugging
@@ -355,6 +360,8 @@ module Composio
 
       # query parameters
       query_params = opts[:query_params] || {}
+      query_params[:'page'] = opts[:'page'] if !opts[:'page'].nil?
+      query_params[:'pageSize'] = opts[:'page_size'] if !opts[:'page_size'].nil?
 
       # header parameters
       header_params = opts[:header_params] || {}
